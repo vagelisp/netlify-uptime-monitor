@@ -327,7 +327,7 @@ The code can be adapted for other platforms:
 
 ## License
 
-[MIT License](LICENSE)
+[GPLv3](LICENSE)
 
 ## Contributing
 
