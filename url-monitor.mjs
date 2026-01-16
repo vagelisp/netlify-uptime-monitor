@@ -39,7 +39,7 @@ import { Resend } from "resend";
  */
 const MONITORS = [
   {
-    url: "https://example.com",
+    url: "https://wp-notificator.com/",
     method: "HEAD",
     expect: "2xx3xx",
   },
@@ -49,7 +49,7 @@ const MONITORS = [
     expect: { anyOf: [200] },
   },
   {
-    url: "https://example.com/sometimes-redirects",
+    url: "https://error.example.com/",
     method: "HEAD",
     expect: {
       oneOfRanges: [
