@@ -43,21 +43,21 @@ const MONITORS = [
     method: "HEAD",
     expect: "2xx3xx",
   },
-  {
-    url: "https://status.example.com/health",
-    method: "GET",
-    expect: { anyOf: [200] },
-  },
-  {
-    url: "https://error.example.com/",
-    method: "HEAD",
-    expect: {
-      oneOfRanges: [
-        [200, 299],
-        [301, 302],
-      ],
-    },
-  },
+//   {
+//     url: "https://status.example.com/health",
+//     method: "GET",
+//     expect: { anyOf: [200] },
+//   },
+//   {
+//     url: "https://error.example.com/",
+//     method: "HEAD",
+//     expect: {
+//       oneOfRanges: [
+//         [200, 299],
+//         [301, 302],
+//       ],
+//     },
+//   },
 ];
 
 // Default configuration constants
