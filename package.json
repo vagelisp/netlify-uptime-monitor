@@ -1,5 +1,40 @@
 {
+  "name": "netlify-uptime-monitor",
+  "version": "1.0.0",
+  "description": "A serverless URL monitoring service that checks website availability and sends email alerts when services go down. Built for Netlify Functions with zero maintenance overhead.",
+  "main": "netlify/functions/index.mjs",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required for serverless functions'",
+    "deploy": "netlify deploy --prod"
+  },
+  "author": {
+    "name": "Vagelis Papaioannou",
+    "email": "hello@vagelis.dev",
+    "url": "https://github.com/vagelisp"
+  },
+  "license": "GPLv3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vagelisp/netlify-uptime-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vagelisp/netlify-uptime-monitor/issues"
+  },
+  "homepage": "https://github.com/vagelisp/netlify-uptime-monitor#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "resend": "^6.7.0"
-  }
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.0.0"
+  },
+  "files": [
+    "netlify/functions/index.mjs",
+    "README.md",
+    "LICENSE"
+  ]
 }
