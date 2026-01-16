@@ -39,7 +39,7 @@ import { Resend } from "resend";
  */
 const MONITORS = [
   {
-    url: "https://wp-notificator.com/",
+    url: "https://github.com/vagelisp/netlify-uptime-monitor",
     method: "HEAD",
     expect: "2xx3xx",
   },
