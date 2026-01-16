@@ -2,11 +2,11 @@ import { Resend } from "resend";
 
 /**
  * URL Uptime Monitor
- * 
+ *
  * A serverless function that monitors multiple URLs for availability and sends
  * email alerts when services are down. Designed to run on Netlify Functions
  * or similar serverless platforms.
- * 
+ *
  * Features:
  * - Concurrent URL checking with configurable limits
  * - Flexible status code expectations
@@ -14,17 +14,17 @@ import { Resend } from "resend";
  * - Email notifications via Resend
  * - Authentication via Bearer tokens
  * - Detailed response reporting
- * 
- * @author Vagelis Papaioannou 
+ *
+ * @author Vagelis Papaioannou
  * @autorurl https://github.com/vagelisp
  * @version 1.0.0
  */
 
 /**
  * Monitor Configuration
- * 
+ *
  * Each monitor object supports the following properties:
- * 
+ *
  * @typedef {Object} Monitor
  * @property {string} url - The URL to monitor (required)
  * @property {"HEAD"|"GET"} [method="HEAD"] - HTTP method (HEAD is faster, but some servers don't support it)
@@ -62,18 +62,18 @@ const MONITORS = [
 
 // Default configuration constants
 const DEFAULT_TIMEOUT_MS = 8000; // 8 seconds
-const DEFAULT_RETRIES = 2;        // Retry failed requests twice
-const CONCURRENCY = 10;           // Check up to 10 URLs simultaneously
+const DEFAULT_RETRIES = 2; // Retry failed requests twice
+const CONCURRENCY = 10; // Check up to 10 URLs simultaneously
 
 /**
  * Main handler function for the URL monitor
- * 
+ *
  * Processes incoming requests, checks all configured URLs, and sends
  * email alerts if any URLs are down.
- * 
+ *
  * @param {Request} req - The incoming HTTP request
  * @returns {Response} JSON response with monitoring results
- * 
+ *
  * Environment variables required:
  * - MONITOR_TOKEN (optional): Bearer token for authentication
  * - RESEND_API_KEY: API key for Resend email service
@@ -183,10 +183,10 @@ export default async (req) => {
 
 /**
  * Check a single monitor with retry logic
- * 
+ *
  * Attempts to check a URL multiple times with exponential backoff
  * between failed attempts. Returns early on first success.
- * 
+ *
  * @param {Monitor} monitor - The monitor configuration
  * @param {Object} options - Options object
  * @param {number} options.timeoutMs - Request timeout in milliseconds
@@ -217,11 +217,11 @@ async function checkWithRetries(monitor, { timeoutMs, retries }) {
 
 /**
  * Perform a single URL check
- * 
+ *
  * Makes an HTTP request to the monitor URL and evaluates the response
  * against the expected criteria. Includes automatic fallback from HEAD
  * to GET if the server doesn't support HEAD requests.
- * 
+ *
  * @param {Monitor} monitor - The monitor configuration
  * @param {Object} options - Options object
  * @param {number} options.timeoutMs - Request timeout in milliseconds
@@ -276,11 +276,11 @@ async function checkOnce(monitor, { timeoutMs }) {
 
 /**
  * Summarize multiple check attempts into a final result
- * 
+ *
  * Combines all attempts for a monitor into a single result object
  * that indicates overall success/failure and includes details about
  * each individual attempt.
- * 
+ *
  * @param {Monitor} monitor - The monitor configuration
  * @param {Array<Object>} attempts - Array of individual attempt results
  * @returns {Object} Summary object with overall status and attempt details
@@ -306,10 +306,10 @@ function summarizeAttempts(monitor, attempts) {
 
 /**
  * Check if a status code matches the expected criteria
- * 
+ *
  * Supports various expectation formats including simple strings,
  * specific code lists, ranges, and negation rules.
- * 
+ *
  * @param {number|null} status - HTTP status code (null for network errors)
  * @param {string|Object} expect - Expectation criteria
  * @returns {boolean} True if status matches expectation
@@ -358,10 +358,10 @@ function matchesExpectation(status, expect) {
 
 /**
  * Process an array with limited concurrency
- * 
+ *
  * Similar to Promise.all but limits the number of concurrent operations
  * to prevent overwhelming servers or hitting rate limits.
- * 
+ *
  * @param {Array} items - Items to process
  * @param {number} limit - Maximum concurrent operations
  * @param {Function} fn - Async function to apply to each item
@@ -385,7 +385,7 @@ async function mapLimit(items, limit, fn) {
 
 /**
  * Calculate exponential backoff delay
- * 
+ *
  * @param {number} attemptIndex - Attempt number (starts at 1)
  * @returns {number} Delay in milliseconds (250ms, 500ms, 1000ms, ...)
  */
@@ -397,7 +397,7 @@ function backoffMs(attemptIndex) {
 
 /**
  * Sleep for specified milliseconds
- * 
+ *
  * @param {number} ms - Milliseconds to sleep
  * @returns {Promise<void>} Promise that resolves after delay
  */
@@ -407,7 +407,7 @@ function sleep(ms) {
 
 /**
  * Format monitoring results into plain text email content
- * 
+ *
  * @param {Array<Object>} down - Array of failed monitor results
  * @param {Array<Object>} all - Array of all monitor results
  * @returns {string} Formatted plain text alert message
@@ -439,7 +439,7 @@ function formatPlainTextAlert(down, all) {
 
 /**
  * Format expectation object for display
- * 
+ *
  * @param {string|Object} expect - Expectation criteria
  * @returns {string} Human-readable expectation string
  */
@@ -455,7 +455,7 @@ function formatExpect(expect) {
 
 /**
  * Create a JSON response
- * 
+ *
  * @param {Object} obj - Object to serialize as JSON
  * @param {number} [status=200] - HTTP status code
  * @returns {Response} HTTP response with JSON content
