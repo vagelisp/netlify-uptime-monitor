@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netlify Uptime Monitor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .title {
+            color: #00ad9f;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .endpoint {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .button {
+            display: inline-block;
+            background: #00ad9f;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: background 0.2s;
+        }
+        .button:hover {
+            background: #008a80;
+        }
+        .button.secondary {
+            background: #666;
+        }
+        .button.secondary:hover {
+            background: #555;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .status.active {
+            background: #e8f5e8;
+            color: #2d5a2d;
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">🚨 Netlify Uptime Monitor</h1>
+        <p class="subtitle">Serverless URL monitoring with email alerts</p>
+        <span class="status active">🟢 Service Active</span>
+    </div>
+
+    <div class="card">
+        <h2>Monitor Endpoint</h2>
+        <p>Trigger a monitoring check by making a request to:</p>
+        <div class="endpoint" id="endpoint">
+            Loading endpoint...
+        </div>
+        <p><strong>Authentication:</strong> Include <code>Authorization: Bearer &lt;token&gt;</code> header if MONITOR_TOKEN is configured.</p>
+        
+        <a href="#" class="button" onclick="checkMonitor()">🔍 Check Now</a>
+        <a href="https://github.com/vagelisp/netlify-uptime-monitor" class="button secondary" target="_blank">📖 View Documentation</a>
+    </div>
+
+    <div class="card">
+        <h2>Features</h2>
+        <ul>
+            <li>⚡ <strong>Serverless</strong> - Runs on Netlify Functions, no servers to maintain</li>
+            <li>🔄 <strong>Concurrent Monitoring</strong> - Check multiple URLs simultaneously</li>
+            <li>📧 <strong>Email Alerts</strong> - Automatic notifications via Resend when URLs are down</li>
+            <li>🔄 <strong>Smart Retries</strong> - Exponential backoff for transient failures</li>
+            <li>🎯 <strong>Flexible Matching</strong> - Support for complex status code expectations</li>
+            <li>🔒 <strong>Optional Auth</strong> - Bearer token protection for your endpoint</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Quick Setup</h2>
+        <ol>
+            <li>Get a <a href="https://resend.com" target="_blank">Resend API key</a></li>
+            <li>Configure environment variables in Netlify dashboard</li>
+            <li>Edit the monitor configuration in your function code</li>
+            <li>Set up scheduled monitoring (cron job, GitHub Actions, etc.)</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h2>Deploy Your Own</h2>
+        <p>Want to deploy your own instance? Click the button below:</p>
+        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/vagelisp/netlify-uptime-monitor" class="button">
+            🚀 Deploy to Netlify
+        </a>
+    </div>
+
+    <script>
+        // Set the endpoint URL dynamically
+        document.getElementById('endpoint').textContent = 
+            `${window.location.origin}/.netlify/functions/url-monitor`;
+
+        async function checkMonitor() {
+            const endpoint = `${window.location.origin}/.netlify/functions/url-monitor`;
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.textContent = '⏳ Checking...';
+            button.style.pointerEvents = 'none';
+            
+            try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                
+                if (data.ok) {
+                    alert(`✅ All ${data.totals.checked} URLs are up!\n\nDuration: ${data.durationMs}ms`);
+                } else {
+                    alert(`❌ ${data.totals.down} URL(s) are down out of ${data.totals.checked} checked.\n\nCheck your email for details.`);
+                }
+            } catch (error) {
+                alert(`❌ Error checking monitor: ${error.message}`);
+            } finally {
+                button.textContent = originalText;
+                button.style.pointerEvents = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
