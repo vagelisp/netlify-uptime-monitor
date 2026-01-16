@@ -2,6 +2,8 @@
 
 A serverless URL monitoring service that checks the availability of multiple websites and sends email alerts when services go down. Built for Netlify Functions with zero maintenance overhead.
 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/vagelisp/netlify-uptime-monitor)
+
 ## Features
 
 - ⚡ **Serverless**: Runs on Netlify Functions - no servers to maintain
